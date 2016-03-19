@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.thyago.chordi.ChordActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/relativeLayout">
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="@dimen/fret_width"
+            android:src="@color/fret_color"
+            android:id="@+id/first_fret" />
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="@dimen/fret_width"
+            android:src="@color/fret_color"
+            android:layout_marginTop="@dimen/fret_distance"
+            android:layout_below="@id/first_fret"
+            android:id="@+id/second_fret" />
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="@dimen/fret_width"
+            android:src="@color/fret_color"
+            android:layout_marginTop="@dimen/fret_distance"
+            android:layout_below="@id/second_fret"
+            android:id="@+id/third_fret" />
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="@dimen/fret_width"
+            android:src="@color/fret_color"
+            android:layout_marginTop="@dimen/fret_distance"
+            android:layout_below="@id/third_fret"
+            android:id="@+id/fourth_fret" />
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="@dimen/fret_width"
+            android:src="@color/fret_color"
+            android:layout_marginTop="@dimen/fret_distance"
+            android:layout_below="@id/fourth_fret"
+            android:id="@+id/fifth_fret" />
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="@dimen/fret_width"
+            android:src="@color/fret_color"
+            android:layout_marginTop="@dimen/fret_distance"
+            android:layout_below="@id/fifth_fret"
+            android:id="@+id/sixth_fret" />
+
+        <ImageView
+            android:layout_width="@dimen/string_width"
+            android:layout_height="match_parent"
+            android:id="@+id/first_string"
+            android:src="@color/string_color" />
+
+        <ImageView
+            android:layout_width="@dimen/string_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/string_distance"
+            android:layout_alignLeft="@id/first_string"
+            android:id="@+id/second_string"
+            android:src="@color/string_color" />
+
+        <ImageView
+            android:layout_width="@dimen/string_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/string_distance"
+            android:layout_alignLeft="@id/second_string"
+            android:id="@+id/third_string"
+            android:src="@color/string_color" />
+
+        <ImageView
+            android:layout_width="@dimen/string_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/string_distance"
+            android:layout_alignLeft="@id/third_string"
+            android:id="@+id/fourth_string"
+            android:src="@color/string_color" />
+
+        <ImageView
+            android:layout_width="@dimen/string_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/string_distance"
+            android:layout_alignLeft="@id/fourth_string"
+            android:id="@+id/fifth_string"
+            android:src="@color/string_color" />
+
+        <ImageView
+            android:layout_width="@dimen/string_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/string_distance"
+            android:layout_alignLeft="@id/fifth_string"
+            android:id="@+id/sixth_string"
+            android:src="@color/string_color" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/finger"
+        android:layout_alignTop="@+id/relativeLayout"
+        android:layout_toLeftOf="@+id/relativeLayout"
+        android:layout_toStartOf="@+id/relativeLayout" />
+
+</RelativeLayout>

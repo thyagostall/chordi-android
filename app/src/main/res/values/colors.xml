@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="string_color">#000</color>
+    <color name="fret_color">#ccc</color>
+    <color name="finger_position">#000</color>
+</resources>

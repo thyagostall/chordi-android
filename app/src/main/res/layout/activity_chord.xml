@@ -102,14 +102,23 @@
             android:id="@+id/sixth_string"
             android:src="@color/string_color" />
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:rotation="-90"
+            android:id="@+id/finger_test"
+            android:background="@drawable/finger" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/finger"
-        android:layout_alignTop="@+id/relativeLayout"
-        android:layout_toLeftOf="@+id/relativeLayout"
-        android:layout_toStartOf="@+id/relativeLayout" />
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_marginTop="@dimen/fret_distance"
+            android:layout_height="@dimen/finger_diameter"
+            android:background="@drawable/bare" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

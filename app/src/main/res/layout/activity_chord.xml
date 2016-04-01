@@ -1,124 +1,138 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.thyago.chordi.ChordActivity">
+    android:gravity="center_vertical"
+    android:padding="16dp"
+    tools:context="com.thyago.chordi.practice.PracticeActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="400dp"
-        android:layout_centerInParent="true"
-        android:id="@+id/relativeLayout">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="@dimen/fret_width"
-            android:src="@color/fret_color"
-            android:id="@+id/first_fret" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingRight="8dp"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="@dimen/fret_width"
-            android:src="@color/fret_color"
-            android:layout_marginTop="@dimen/fret_distance"
-            android:layout_below="@id/first_fret"
-            android:id="@+id/second_fret" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:background="#000"
+                android:id="@+id/firstChord">
+            </FrameLayout>
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="@dimen/fret_width"
-            android:src="@color/fret_color"
-            android:layout_marginTop="@dimen/fret_distance"
-            android:layout_below="@id/second_fret"
-            android:id="@+id/third_fret" />
+            <TextView
+                android:gravity="right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/firstChordName"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:text="D =" />
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="@dimen/fret_width"
-            android:src="@color/fret_color"
-            android:layout_marginTop="@dimen/fret_distance"
-            android:layout_below="@id/third_fret"
-            android:id="@+id/fourth_fret" />
+        </LinearLayout>
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="@dimen/fret_width"
-            android:src="@color/fret_color"
-            android:layout_marginTop="@dimen/fret_distance"
-            android:layout_below="@id/fourth_fret"
-            android:id="@+id/fifth_fret" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="@dimen/fret_width"
-            android:src="@color/fret_color"
-            android:layout_marginTop="@dimen/fret_distance"
-            android:layout_below="@id/fifth_fret"
-            android:id="@+id/sixth_fret" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/secondChordName"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:text="= C" />
 
-        <ImageView
-            android:layout_width="@dimen/string_width"
-            android:layout_height="match_parent"
-            android:id="@+id/first_string"
-            android:src="@color/string_color" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:background="#000"
+                android:id="@+id/secondChord">
+            </FrameLayout>
 
-        <ImageView
-            android:layout_width="@dimen/string_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/string_distance"
-            android:layout_alignLeft="@id/first_string"
-            android:id="@+id/second_string"
-            android:src="@color/string_color" />
+        </LinearLayout>
 
-        <ImageView
-            android:layout_width="@dimen/string_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/string_distance"
-            android:layout_alignLeft="@id/second_string"
-            android:id="@+id/third_string"
-            android:src="@color/string_color" />
+    </LinearLayout>
 
-        <ImageView
-            android:layout_width="@dimen/string_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/string_distance"
-            android:layout_alignLeft="@id/third_string"
-            android:id="@+id/fourth_string"
-            android:src="@color/string_color" />
-
-        <ImageView
-            android:layout_width="@dimen/string_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/string_distance"
-            android:layout_alignLeft="@id/fourth_string"
-            android:id="@+id/fifth_string"
-            android:src="@color/string_color" />
-
-        <ImageView
-            android:layout_width="@dimen/string_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/string_distance"
-            android:layout_alignLeft="@id/fifth_string"
-            android:id="@+id/sixth_string"
-            android:src="@color/string_color" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:rotation="-90"
-            android:id="@+id/finger_test"
-            android:background="@drawable/finger" />
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:text="0:59"/>
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_marginTop="@dimen/fret_distance"
-            android:layout_height="@dimen/finger_diameter"
-            android:background="@drawable/bare" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:text="80 bpm"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Prev." />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Play" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Next" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:gravity="center_horizontal"
+            android:text="C - A" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:gravity="center_horizontal"
+            android:text="C - E" />
+
+    </LinearLayout>
+
+</LinearLayout>

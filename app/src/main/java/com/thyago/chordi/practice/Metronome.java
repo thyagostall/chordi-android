@@ -1,4 +1,4 @@
-package com.thyago.chordi;
+package com.thyago.chordi.practice;
 
 import android.os.Handler;
 import android.os.Message;

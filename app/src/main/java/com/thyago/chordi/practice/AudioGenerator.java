@@ -1,4 +1,4 @@
-package com.thyago.chordi;
+package com.thyago.chordi.practice;
 
 /**
  * Created by thyago on 3/29/16.

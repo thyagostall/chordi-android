@@ -9,8 +9,8 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".ChordActivity"
-            android:label="@string/title_activity_login">
+            android:name=".practice.PracticeActivity"
+            android:label="@string/title_activity_practice">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

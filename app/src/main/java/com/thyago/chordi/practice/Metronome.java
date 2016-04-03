@@ -33,39 +33,52 @@ public class Metronome {
     }
 
     public void calcSilence() {
-        silence = (int) (((60/bpm)*8000)-tick);
+        silence = (int) (((60 / bpm) * 8000) - tick);
         soundTickArray = new double[this.tick];
         soundTockArray = new double[this.tick];
         silenceSoundArray = new double[this.silence];
         msg = new Message();
-        msg.obj = ""+currentBeat;
+        msg.obj = "" + currentBeat;
+
         double[] tick = audioGenerator.getSineWave(this.tick, 8000, beatSound);
         double[] tock = audioGenerator.getSineWave(this.tick, 8000, sound);
-        for(int i=0;i<this.tick;i++) {
+
+        for (int i = 0; i < this.tick; i++) {
             soundTickArray[i] = tick[i];
             soundTockArray[i] = tock[i];
         }
-        for(int i=0;i<silence;i++)
+
+        for (int i=0; i < silence; i++) {
             silenceSoundArray[i] = 0;
+        }
     }
 
     public void play() {
         calcSilence();
         do {
             msg = new Message();
-            msg.obj = ""+currentBeat;
-            if(currentBeat == 1)
+            msg.obj = "" + currentBeat;
+            if (currentBeat == 1) {
                 audioGenerator.writeSound(soundTockArray);
-            else
+            } else {
                 audioGenerator.writeSound(soundTickArray);
-            if(bpm <= 120)
+            }
+
+            if (bpm <= 120) {
                 mHandler.sendMessage(msg);
+            }
+
             audioGenerator.writeSound(silenceSoundArray);
-            if(bpm > 120)
+
+            if (bpm > 120) {
                 mHandler.sendMessage(msg);
+            }
+
             currentBeat++;
-            if(currentBeat > beat)
+
+            if (currentBeat > beat) {
                 currentBeat = 1;
+            }
         } while(play);
     }
 

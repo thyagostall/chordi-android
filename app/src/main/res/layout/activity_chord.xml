@@ -19,12 +19,11 @@
             android:paddingRight="8dp"
             android:orientation="vertical">
 
-            <FrameLayout
+            <com.thyago.chordi.practice.ChordView
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:background="#000"
-                android:id="@+id/firstChord">
-            </FrameLayout>
+                android:id="@+id/firstChord"
+            />
 
             <TextView
                 android:gravity="right"
@@ -50,12 +49,11 @@
                 android:textAppearance="?android:textAppearanceLarge"
                 android:text="= C" />
 
-            <FrameLayout
+            <com.thyago.chordi.practice.ChordView
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:background="#000"
-                android:id="@+id/secondChord">
-            </FrameLayout>
+                android:id="@+id/secondChord"
+            />
 
         </LinearLayout>
 

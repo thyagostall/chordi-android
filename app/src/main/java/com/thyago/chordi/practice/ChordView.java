@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -15,13 +14,19 @@ public class ChordView extends View {
 
     private static final String LOG_TAG = ChordView.class.getSimpleName();
     private static final int STRING_QTY = 6;
-    private static final int STRING_WIDTH = 6;
+    private static final int STRING_WIDTH = 4;
+    private static final int FRET_WIDTH = 3;
     private static final int FINGER_RADIUS = 40;
     private static final int NUT_HEIGHT = 20;
     private static final int FRET_QTY = 4;
     private static final int MUTED_STRINGS_HEIGHT = 50;
 
     private Paint mPaintChordView;
+
+    private int mStringDistances;
+    private int mFretDistance;
+    private int mMarginLeft;
+    private int mMarginTop;
 
     public ChordView(Context context) {
         super(context);
@@ -46,54 +51,116 @@ public class ChordView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        setBackgroundColor(Color.CYAN);
+        mMarginLeft = FINGER_RADIUS;
+        mMarginTop = NUT_HEIGHT;
 
         int neckWidth = getWidth() - 2 * FINGER_RADIUS;
-        int distance = neckWidth / (STRING_QTY - 1);
-        int marginLeft = FINGER_RADIUS;
+        mStringDistances = neckWidth / (STRING_QTY - 1);
+        mFretDistance = getHeight() / (FRET_QTY + 1);
 
-        int marginRight = getWidth() - FINGER_RADIUS;
-
-        int marginTop = NUT_HEIGHT;
-        int fretDistance = getHeight() / (FRET_QTY + 1);
-
-        Log.d(LOG_TAG, "Distance: " + distance);
-        Log.d(LOG_TAG, "Width: " + getWidth());
-
+        drawFrets(canvas);
         drawNut(canvas, FINGER_RADIUS, 0, getWidth() - 2 * FINGER_RADIUS, NUT_HEIGHT);
 
-        mPaintChordView.setColor(Color.GRAY);
-        mPaintChordView.setStrokeWidth(STRING_WIDTH);
+        drawStrings(canvas);
 
-        for (int i = 0; i < STRING_QTY - 1; i++) {
-            marginTop += fretDistance;
-            canvas.drawLine(marginLeft, marginTop, marginRight, marginTop, mPaintChordView);
-        }
+        boolean chord[][] = getTestChord();
+        drawChord(canvas, chord);
+        drawStringsToBePlayed(canvas, new boolean[]{false, false, true, true, true, true});
+    }
 
-        mPaintChordView.setStrokeWidth(STRING_WIDTH);
-
+    private void drawStringsToBePlayed(Canvas canvas, boolean muted[]) {
+        int left = mMarginLeft;
         for (int i = 0; i < STRING_QTY; i++) {
-            mPaintChordView.setColor(Color.BLACK);
-            canvas.drawLine(marginLeft, 0, marginLeft, getHeight() - MUTED_STRINGS_HEIGHT, mPaintChordView);
-            drawMutedStringDiagram(canvas, marginLeft, getHeight() - MUTED_STRINGS_HEIGHT, MUTED_STRINGS_HEIGHT);
-            marginLeft += distance;
+            if (muted[i]) {
+                drawNought(canvas, left, getHeight() - MUTED_STRINGS_HEIGHT, MUTED_STRINGS_HEIGHT);
+            } else {
+                drawCross(canvas, left, getHeight() - MUTED_STRINGS_HEIGHT, MUTED_STRINGS_HEIGHT);
+            }
+            left += mStringDistances;
         }
     }
 
-    private void drawMutedStringDiagram(Canvas canvas, int centerX, int startY, int length) {
-        mPaintChordView.setColor(Color.RED);
-        canvas.drawRect(centerX - length / 2, startY, centerX + length / 2, startY + length, mPaintChordView);
-        mPaintChordView.setColor(Color.BLUE);
-        canvas.drawCircle(centerX, startY + length / 2, length / 3, mPaintChordView);
-        mPaintChordView.setColor(Color.GREEN);
-        canvas.drawLine(centerX - length / 2, startY, centerX + length / 2, startY + length, mPaintChordView);
-        canvas.drawLine(centerX + length / 2, startY, centerX - length / 2, startY + length, mPaintChordView);
+    private void drawChord(Canvas canvas, boolean chord[][]) {
+        for (int i = 0; i < STRING_QTY; i++) {
+            for (int j = 0; j < FRET_QTY; j++) {
+                if (chord[i][j]) {
+                    drawFingerTip(canvas, i, j);
+                }
+            }
+        }
+    }
+
+    private void drawStrings(Canvas canvas) {
+        mPaintChordView.setStrokeWidth(STRING_WIDTH);
+
+        int left = mMarginLeft;
+        for (int i = 0; i < STRING_QTY; i++) {
+            mPaintChordView.setColor(Color.BLACK);
+            mPaintChordView.setStyle(Paint.Style.FILL);
+            canvas.drawLine(left, 0, left, getHeight() - MUTED_STRINGS_HEIGHT, mPaintChordView);
+            left += mStringDistances;
+        }
+    }
+
+    private void drawFrets(Canvas canvas) {
+        mPaintChordView.setColor(Color.GRAY);
+        mPaintChordView.setStrokeWidth(FRET_WIDTH);
+
+        int marginRight = getWidth() - FINGER_RADIUS;
+        int top = mMarginTop;
+
+        for (int i = 0; i < STRING_QTY - 1; i++) {
+            top += mFretDistance;
+            canvas.drawLine(mMarginLeft, top, marginRight, top, mPaintChordView);
+        }
+    }
+
+    private void drawCross(Canvas canvas, int centerX, int startY, int length) {
+        mPaintChordView.setColor(Color.BLACK);
+        mPaintChordView.setStyle(Paint.Style.STROKE);
+
+        int r = length / 4;
+        int centerY = startY + (length / 2);
+        canvas.drawLine(centerX - r, centerY - r, centerX + r, centerY + r, mPaintChordView);
+        canvas.drawLine(centerX + r, centerY - r, centerX - r, centerY + r, mPaintChordView);
+    }
+
+    private void drawNought(Canvas canvas, int centerX, int startY, int length) {
+        mPaintChordView.setColor(Color.BLACK);
+        mPaintChordView.setStyle(Paint.Style.STROKE);
+
+        canvas.drawCircle(centerX, startY + length / 2, length / 4, mPaintChordView);
     }
 
     private void drawNut(Canvas canvas, int startX, int startY, int width, int height) {
         mPaintChordView.setColor(Color.BLACK);
-        mPaintChordView.setStrokeWidth(STRING_WIDTH);
+        mPaintChordView.setStyle(Paint.Style.FILL);
         canvas.drawRect(startX, startY, width + startX, height + startY, mPaintChordView);
     }
 
+    private void drawFingerTip(Canvas canvas, int stringNumber, int fretNumber) {
+        mPaintChordView.setStyle(Paint.Style.FILL);
+        int x = stringNumber * mStringDistances + mMarginLeft;
+        int y = fretNumber * mFretDistance + mMarginTop;
+        int r = (int) (FINGER_RADIUS * 0.75);
+
+        y += mFretDistance / 2;
+        canvas.drawCircle(x, y, r, mPaintChordView);
+    }
+
+    public boolean[][] getTestChord() {
+        boolean result[][] = new boolean[STRING_QTY][FRET_QTY];
+
+        for (int i = 0; i < STRING_QTY; i++) {
+            for (int j = 0; j < FRET_QTY; j++) {
+                result[i][j] = false;
+            }
+        }
+        result[5][0] = true;
+        result[3][1] = true;
+        result[2][2] = true;
+        result[4][2] = true;
+
+        return result;
+    }
 }

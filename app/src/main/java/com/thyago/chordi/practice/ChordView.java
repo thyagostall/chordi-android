@@ -4,8 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
+
+import java.lang.reflect.Type;
 
 /**
  * Created by thyago on 4/3/16.
@@ -81,13 +86,16 @@ public class ChordView extends View {
     }
 
     private void drawChord(Canvas canvas, boolean chord[][]) {
+        int f = 4;
         for (int i = 0; i < STRING_QTY; i++) {
             for (int j = 0; j < FRET_QTY; j++) {
                 if (chord[i][j]) {
-                    drawFingerTip(canvas, i, j);
+                    drawFingerTip(canvas, i, j, f--);
                 }
             }
         }
+
+        drawBar(canvas, 3, 1, 4);
     }
 
     private void drawStrings(Canvas canvas) {
@@ -138,7 +146,20 @@ public class ChordView extends View {
         canvas.drawRect(startX, startY, width + startX, height + startY, mPaintChordView);
     }
 
-    private void drawFingerTip(Canvas canvas, int stringNumber, int fretNumber) {
+    private void drawBar(Canvas canvas, int fretNumber, int startString, int stopString) {
+        mPaintChordView.setStyle(Paint.Style.FILL);
+        int startX = startString * mStringDistances + mMarginLeft;
+        int stopX = stopString * mStringDistances + mMarginLeft;
+        int y = fretNumber * mFretDistance + mMarginTop;
+        int r = (int) (FINGER_RADIUS * 0.75);
+
+        y += mFretDistance / 2;
+        canvas.drawCircle(startX, y, r, mPaintChordView);
+        canvas.drawRect(startX, y - r, stopX, y + r, mPaintChordView);
+        canvas.drawCircle(stopX, y, r, mPaintChordView);
+    }
+
+    private void drawFingerTip(Canvas canvas, int stringNumber, int fretNumber, int fingerNumber) {
         mPaintChordView.setStyle(Paint.Style.FILL);
         int x = stringNumber * mStringDistances + mMarginLeft;
         int y = fretNumber * mFretDistance + mMarginTop;
@@ -146,6 +167,26 @@ public class ChordView extends View {
 
         y += mFretDistance / 2;
         canvas.drawCircle(x, y, r, mPaintChordView);
+
+        mPaintChordView.setAntiAlias(true);
+        mPaintChordView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        mPaintChordView.setTextSize(48);
+        mPaintChordView.setColor(Color.WHITE);
+
+        Rect areaRect = new Rect(x - r, y - r, x + r, y + r);
+
+        String number = String.valueOf(fingerNumber);
+
+        RectF bounds = new RectF(areaRect);
+        bounds.right = mPaintChordView.measureText(number, 0, number.length());
+        bounds.bottom = mPaintChordView.descent() - mPaintChordView.ascent();
+
+        bounds.left += (areaRect.width() - bounds.right) / 2.f;
+        bounds.top += (areaRect.height() - bounds.bottom) / 2.f;
+
+        canvas.drawText(number, bounds.left, bounds.top - mPaintChordView.ascent(), mPaintChordView);
+
+        mPaintChordView.setColor(Color.BLACK);
     }
 
     public boolean[][] getTestChord() {

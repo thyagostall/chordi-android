@@ -10,9 +10,8 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
-
-import java.lang.reflect.Type;
 
 /**
  * Created by thyago on 4/3/16.
@@ -24,7 +23,6 @@ public class ChordView extends View {
     private static final int STRING_QTY = 6;
     private static final int STRING_WIDTH = 4;
     private static final int FRET_WIDTH = 3;
-    private static final int FINGER_RADIUS = 40;
     private static final int MARGIN = 65;
     private static final int NUT_HEIGHT = 20;
     private static final int FRET_QTY = 4;
@@ -37,7 +35,8 @@ public class ChordView extends View {
     private int mMarginLeft;
     private int mMarginTop;
 
-    private int mStartFret = 0;
+    private int mStartFret = 30;
+    private int mFingerRadius = 40;
 
     public ChordView(Context context) {
         super(context);
@@ -68,6 +67,9 @@ public class ChordView extends View {
         int neckWidth = getWidth() - 2 * MARGIN;
         mStringDistances = neckWidth / (STRING_QTY - 1);
         mFretDistance = getHeight() / (FRET_QTY + 1);
+        mFingerRadius = Math.min((int) (mStringDistances * 0.6), (int) (mFretDistance * 0.4));
+
+        Log.d(LOG_TAG, "Finger radius: " + mFingerRadius);
 
         drawFrets(canvas);
         drawNut(canvas, MARGIN, 0, getWidth() - 2 * MARGIN, NUT_HEIGHT);
@@ -174,7 +176,7 @@ public class ChordView extends View {
             Rect rect = new Rect();
             String startFret = String.valueOf(mStartFret);
             mPaintChordView.getTextBounds(startFret, 0, startFret.length(), rect);
-            canvas.drawText(startFret, 0, rect.height(), mPaintChordView);
+            canvas.drawText(startFret, mMarginLeft - rect.width() - 10, (mFretDistance + rect.height()) / 2, mPaintChordView);
         }
     }
 
@@ -183,7 +185,7 @@ public class ChordView extends View {
         int startX = startString * mStringDistances + mMarginLeft;
         int stopX = stopString * mStringDistances + mMarginLeft;
         int y = fretNumber * mFretDistance + mMarginTop;
-        int r = (int) (FINGER_RADIUS * 0.75);
+        int r = (int) (mFingerRadius * 0.75);
 
         y += mFretDistance / 2;
         canvas.drawCircle(startX, y, r, mPaintChordView);
@@ -195,7 +197,7 @@ public class ChordView extends View {
         mPaintChordView.setStyle(Paint.Style.FILL);
         int x = stringNumber * mStringDistances + mMarginLeft;
         int y = fretNumber * mFretDistance + mMarginTop;
-        int r = (int) (FINGER_RADIUS * 0.75);
+        int r = (int) (mFingerRadius * 0.75);
 
         y += mFretDistance / 2;
         canvas.drawCircle(x, y, r, mPaintChordView);
@@ -230,8 +232,8 @@ public class ChordView extends View {
             }
         }
         result[5][0] = true;
-        result[3][1] = true;
-        result[2][2] = true;
+        result[4][1] = true;
+        result[3][2] = true;
         result[4][2] = true;
 
         return result;

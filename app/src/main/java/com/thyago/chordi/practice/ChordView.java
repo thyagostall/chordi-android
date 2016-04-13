@@ -3,9 +3,11 @@ package com.thyago.chordi.practice;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,10 +20,12 @@ import java.lang.reflect.Type;
 public class ChordView extends View {
 
     private static final String LOG_TAG = ChordView.class.getSimpleName();
+
     private static final int STRING_QTY = 6;
     private static final int STRING_WIDTH = 4;
     private static final int FRET_WIDTH = 3;
     private static final int FINGER_RADIUS = 40;
+    private static final int MARGIN = 65;
     private static final int NUT_HEIGHT = 20;
     private static final int FRET_QTY = 4;
     private static final int MUTED_STRINGS_HEIGHT = 50;
@@ -32,6 +36,8 @@ public class ChordView extends View {
     private int mFretDistance;
     private int mMarginLeft;
     private int mMarginTop;
+
+    private int mStartFret = 0;
 
     public ChordView(Context context) {
         super(context);
@@ -56,15 +62,15 @@ public class ChordView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        mMarginLeft = FINGER_RADIUS;
+        mMarginLeft = MARGIN;
         mMarginTop = NUT_HEIGHT;
 
-        int neckWidth = getWidth() - 2 * FINGER_RADIUS;
+        int neckWidth = getWidth() - 2 * MARGIN;
         mStringDistances = neckWidth / (STRING_QTY - 1);
         mFretDistance = getHeight() / (FRET_QTY + 1);
 
         drawFrets(canvas);
-        drawNut(canvas, FINGER_RADIUS, 0, getWidth() - 2 * FINGER_RADIUS, NUT_HEIGHT);
+        drawNut(canvas, MARGIN, 0, getWidth() - 2 * MARGIN, NUT_HEIGHT);
 
         drawStrings(canvas);
 
@@ -95,26 +101,44 @@ public class ChordView extends View {
             }
         }
 
-        drawBar(canvas, 3, 1, 4);
+        drawBar(canvas, 3, 2, 5);
     }
 
     private void drawStrings(Canvas canvas) {
         mPaintChordView.setStrokeWidth(STRING_WIDTH);
 
+        if (mStartFret > 0) {
+            Shader shader = new LinearGradient(0, 0, 0, mFretDistance, Color.LTGRAY, Color.BLACK, Shader.TileMode.CLAMP);
+            mPaintChordView.setShader(shader);
+        }
+
         int left = mMarginLeft;
         for (int i = 0; i < STRING_QTY; i++) {
             mPaintChordView.setColor(Color.BLACK);
             mPaintChordView.setStyle(Paint.Style.FILL);
-            canvas.drawLine(left, 0, left, getHeight() - MUTED_STRINGS_HEIGHT, mPaintChordView);
+            canvas.drawLine(left, 0, left, getHeight() - 2 * MUTED_STRINGS_HEIGHT, mPaintChordView);
             left += mStringDistances;
         }
+
+        Shader shader = new LinearGradient(0, getHeight() - 2 * MUTED_STRINGS_HEIGHT, 0, getHeight() - MUTED_STRINGS_HEIGHT, Color.BLACK, Color.LTGRAY, Shader.TileMode.CLAMP);
+        mPaintChordView.setShader(shader);
+
+        left = mMarginLeft;
+        for (int i = 0; i < STRING_QTY; i++) {
+            mPaintChordView.setColor(Color.BLACK);
+            mPaintChordView.setStyle(Paint.Style.FILL);
+            canvas.drawLine(left, getHeight() - 2 * MUTED_STRINGS_HEIGHT, left, getHeight() - MUTED_STRINGS_HEIGHT, mPaintChordView);
+            left += mStringDistances;
+        }
+
+        mPaintChordView.setShader(null);
     }
 
     private void drawFrets(Canvas canvas) {
         mPaintChordView.setColor(Color.GRAY);
         mPaintChordView.setStrokeWidth(FRET_WIDTH);
 
-        int marginRight = getWidth() - FINGER_RADIUS;
+        int marginRight = getWidth() - MARGIN;
         int top = mMarginTop;
 
         for (int i = 0; i < STRING_QTY - 1; i++) {
@@ -143,7 +167,15 @@ public class ChordView extends View {
     private void drawNut(Canvas canvas, int startX, int startY, int width, int height) {
         mPaintChordView.setColor(Color.BLACK);
         mPaintChordView.setStyle(Paint.Style.FILL);
-        canvas.drawRect(startX, startY, width + startX, height + startY, mPaintChordView);
+
+        if (mStartFret <= 0) {
+            canvas.drawRect(startX, startY, width + startX, height + startY, mPaintChordView);
+        } else {
+            Rect rect = new Rect();
+            String startFret = String.valueOf(mStartFret);
+            mPaintChordView.getTextBounds(startFret, 0, startFret.length(), rect);
+            canvas.drawText(startFret, 0, rect.height(), mPaintChordView);
+        }
     }
 
     private void drawBar(Canvas canvas, int fretNumber, int startString, int stopString) {

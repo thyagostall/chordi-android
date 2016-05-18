@@ -20,12 +20,12 @@ public class ChordView extends View {
 
     private static final String LOG_TAG = ChordView.class.getSimpleName();
 
-    private static final int STRING_QTY = 6;
+    private static final int STRING_QTY = Chord.STRING_QTY;
     private static final int STRING_WIDTH = 4;
     private static final int FRET_WIDTH = 3;
     private static final int MARGIN = 65;
     private static final int NUT_HEIGHT = 20;
-    private static final int FRET_QTY = 4;
+    private static final int FRET_QTY = Chord.FRET_QTY;
     private static final int MUTED_STRINGS_HEIGHT = 50;
 
     private Paint mPaintChordView;
@@ -69,14 +69,12 @@ public class ChordView extends View {
         mFretDistance = getHeight() / (FRET_QTY + 1);
         mFingerRadius = Math.min((int) (mStringDistances * 0.6), (int) (mFretDistance * 0.4));
 
-        Log.d(LOG_TAG, "Finger radius: " + mFingerRadius);
-
         drawFrets(canvas);
         drawNut(canvas, MARGIN, 0, getWidth() - 2 * MARGIN, NUT_HEIGHT);
 
         drawStrings(canvas);
 
-        boolean chord[][] = getTestChord();
+        int chord[][] = getTestChord();
         drawChord(canvas, chord);
         drawStringsToBePlayed(canvas, new boolean[]{false, false, true, true, true, true});
     }
@@ -93,12 +91,14 @@ public class ChordView extends View {
         }
     }
 
-    private void drawChord(Canvas canvas, boolean chord[][]) {
-        int f = 4;
+    private void drawChord(Canvas canvas, int chord[][]) {
+        Log.e(LOG_TAG, "Test Method -- Mock Data");
+
+        int f = 8;
         for (int i = 0; i < STRING_QTY; i++) {
             for (int j = 0; j < FRET_QTY; j++) {
-                if (chord[i][j]) {
-                    drawFingerTip(canvas, i, j, f--);
+                if (chord[i][j] != Chord.NO_FINGER) {
+                    drawFingerTip(canvas, i, j, chord[i][j]);
                 }
             }
         }
@@ -223,18 +223,19 @@ public class ChordView extends View {
         mPaintChordView.setColor(Color.BLACK);
     }
 
-    public boolean[][] getTestChord() {
-        boolean result[][] = new boolean[STRING_QTY][FRET_QTY];
+    public int[][] getTestChord() {
+        Log.e(LOG_TAG, "Test Method -- Mock Data");
+        int result[][] = new int[STRING_QTY][FRET_QTY];
 
         for (int i = 0; i < STRING_QTY; i++) {
             for (int j = 0; j < FRET_QTY; j++) {
-                result[i][j] = false;
+                result[i][j] = Chord.NO_FINGER;
             }
         }
-        result[5][0] = true;
-        result[4][1] = true;
-        result[3][2] = true;
-        result[4][2] = true;
+        result[5][0] = Chord.FIRST_FINGER;
+        result[4][1] = Chord.SECOND_FINGER;
+        result[3][2] = Chord.THIRD_FINGER;
+        result[4][2] = Chord.FOURTH_FINGER;
 
         return result;
     }
